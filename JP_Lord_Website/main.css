@@ -1,0 +1,229 @@
+#home_body {
+    background-image: url('HomescreenS1.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+#sensory_room_body {
+    background-image: url('SensoryRoomS1.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    
+}
+
+#playground_body{
+    background-image: url('PlaygroundS1.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    
+}
+
+#about_body{
+    background-image: url('HomescreenS1.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+#navbar {
+    text-align: center;
+    margin-top: 40px;
+    background-color: #F0F7F4; 
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 3px;
+}
+
+#navbar ul li{
+    display: inline;
+}
+
+.navbar-nav.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+}
+
+.nav-link{
+    font-size: 25px;
+}
+
+#test{
+    background-color: blue;
+}
+
+#test_box{
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
+    margin-bottom: 30px;
+    background-color: #70ABAF;
+    align-items: center;
+}
+
+.bubble {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    opacity: .6;
+    border-style: solid;
+  }
+
+#bubblecolumn{
+    background-color: black;
+}
+
+.customButton{
+    background-color: #772D8B;
+    border-radius: 30px;
+    color: #F0F7F4;
+    font-size: .75vw;
+    text-align: center;
+    
+}
+
+html, body{
+    height: 100%;
+}
+
+.coverPhoto{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    padding: 10px;
+    margin: 0;
+    padding-top: 25px;
+}
+
+#sensory_room_option_title{
+    text-align: center;
+}
+
+#changeScreenSize{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+#setting{
+    font-size: 30px;
+}
+
+#settingButton{
+    background-color: #F0F7F4;
+    border-width: 0;
+    border-color: #F0F7F4;
+}
+
+#video, #canvas {
+    display: none;
+  }
+
+#pixel-canvas{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin-top: 0%;
+    margin-left: -2%; 
+}
+
+#sandWrapper{
+    display: flex;
+    justify-content: center;
+}
+  
+#sandContainer{
+    width: 1000px;
+    height: 500px;
+    background-color: black;
+    
+}
+
+canvas {
+    width: 800px;
+    height: 600px;
+    border: 1px solid #ccc;
+    background-color: black;
+
+  }
+
+  body {
+    background-color: #232323;
+    color: #FFF;
+    font-family: Arial, sans-serif;
+  }
+  
+  .board {
+    margin: 0 auto;
+    width: 560px;
+  }
+  
+  table {
+    border-collapse: collapse;
+    margin: 0 auto;
+  }
+  
+  td {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #FFF;
+    text-align: center;
+    font-size: 60px;
+    cursor: pointer;
+  }
+  
+  .cell {
+    background-color: #232323;
+  }
+  
+  .cell.player1 {
+    background-color: #E74C3C;
+  }
+  
+  .cell.player2 {
+    background-color: #3498DB;
+  }
+  
+  .turn {
+    margin: 10px auto;
+    width: 300px;
+    text-align: center;
+  }
+  
+  .turn h2 {
+    font-size: 24px;
+  }
+  
+  .turn .player1 {
+    color: #E74C3C;
+  }
+  
+  .turn .player2 {
+    color: #3498DB;
+  }
+  
+  .containerB {
+    width: 500px;
+    height: 500px;
+    border: 1px solid black;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .block {
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 0.3s ease-out;
+    transform: translate(-50%, -50%);
+  }
+  
