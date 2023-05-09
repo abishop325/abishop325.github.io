@@ -121,124 +121,18 @@ html, body{
     border-color: #F0F7F4;
 }
 
-#video, #canvas {
-    display: none;
-  }
-
-#pixel-canvas{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    margin-top: 0%;
-    margin-left: -2%; 
-}
-
-#sandWrapper{
-    display: flex;
-    justify-content: center;
-}
-  
-#sandContainer{
-    width: 1000px;
-    height: 500px;
-    background-color: black;
-    
-}
-
 canvas {
-    width: 800px;
-    height: 600px;
-    border: 1px solid #ccc;
-    background-color: black;
-
+    border: 1px solid black;
+    width: 560px;
+    height: 360px;
+    margin-left:35%;
+    margin-top: 5%;
   }
 
+  
   html, body {
     overscroll-behavior-x: none;
 }
  
-
-.board {
-    display: inline-block;
-    margin: 20px;
-    border: 2px solid black;
-    box-sizing: border-box;
-  }
   
-  .row {
-    display: flex;
-  }
-  
-  .cell {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin: 5px;
-    background-color: white;
-    border: 2px solid black;
-  }
-  
-  .red {
-    background-color: red;
-  }
-  
-  .yellow {
-    background-color: yellow;
-  }
-
-  .connectWrapper{
-    margin-top: 5%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  #animalbox{
-    background-image: url('Background_Images/Fall_Background.jpg');
-    /* background-repeat: no-repeat; */
-    /* background-attachment: fixed; */
-    background-size: cover;
-  }
-
-  #dogpix{
-    position: relative;
-    left: 35%;
-    top: 65%;
-  }
-
-  #duckpix{
-    position: relative;
-    left: 45%;
-    top:75%
-  }
-
-  #pigpix{
-    position: relative;
-    left:-25%;
-    top: 70%;
-  }
-
-  #sheeppix{
-    position: relative;
-    left: 50%;
-    top:73%
-  }
-
-  .sandContainer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-#aboutStuff{
-  position: absolute;
-  left: 5%;
-  top: 73%;
-}
-
-#radioDiv{
-  position: absolute;
-  left: 5%;
-  top: 90%;
-}
-  
+ 

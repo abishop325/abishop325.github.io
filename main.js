@@ -26,8 +26,9 @@ window.onload = function(){
     curScheme = sessionStorage.getItem("currentScheme");
   }
 
-  console.log(curPage);
-  console.log(curScheme);
+  console.log("Current Page: "+curPage);
+  console.log("Current Scheme: "+curScheme);
+  
   
   updatePage();
   
@@ -70,17 +71,17 @@ window.onload = function(){
     updatePage();
   })
   
-
+  
   if(curPage == 0){
 
   }
 
   else if(curPage == 1){
     var navToBubble = document.getElementById("coverPhotoBubble");
-    var navToStars = document.getElementById("navToStars");
-    var navToVideo = document.getElementById("navToVideo");
-    var navToWaves = document.getElementById("navToWaves");
-    var navToSnake = document.getElementById("navToSnake");
+    var navToStars = document.getElementById("coverPhotoStar");
+    var navToVideo = document.getElementById("coverPhotoVideo");
+    var navToWaves = document.getElementById("coverPhotoWave");
+    var navToSnake = document.getElementById("coverPhotoSnake");
     updatePage()
 
 
@@ -111,10 +112,11 @@ window.onload = function(){
   }
 
   else if(curPage == 2){
-   var navToFour = document.getElementById("navToFour");
-   var navToBlock = document.getElementById("navToBlock");
-   var navToFalling = document.getElementById("navToFalling");
-   var navToAnimals = document.getElementById("navToAnimals")
+   var navToFour = document.getElementById("coverPhotoConnect");
+   var navToBlock = document.getElementById("coverPhotoDraw");
+   var navToFalling = document.getElementById("coverPhotoSand");
+   var navToAnimals = document.getElementById("coverPhotoAnimal");
+   var navToMovingBlocks = document.getElementById("navToMovingBlocks");
    updatePage()
 
    navToFour.addEventListener("click", function(){
@@ -137,6 +139,11 @@ window.onload = function(){
     sessionStorage.setItem("currentPage", curPage);
   });
 
+  navToMovingBlocks.addEventListener("click", function(){
+    curPage = 24;
+    sessionStorage.setItem("currentPage", curPage);
+  });
+
 
 
 
@@ -148,6 +155,7 @@ window.onload = function(){
 
   else if(curPage == 4){
     var tint_factor = .3;
+    
     var column = document.getElementById("bubblecolumn")
     var container = document.getElementById("bubbleContainer");
     var Redbutton = document.getElementById("colorChangeButtonRed");
@@ -236,6 +244,7 @@ window.onload = function(){
         var distance = 0;
         var size = (Math.random() * 50)+10;
         var bubble = document.createElement("div");
+        var popped = false
         bubble.classList.add("bubble");
         bubble.style.left = ((Math.random() * 80)+1) + "%";
         bubble.style.bottom = "0";
@@ -256,6 +265,7 @@ window.onload = function(){
         bubble.style.borderRadius = shapes[shapeIndex] + "%";
         bubble.addEventListener("click",function(){
           bubble.style.visibility = "hidden";
+          
           bubbleSound.play();
         });
         column.appendChild(bubble);
@@ -267,7 +277,13 @@ window.onload = function(){
               bubble.style.bottom = parseInt(bubble.style.bottom) + 1 + "px";
               
           }else{
-              bubble.style.visibility = "hidden"
+              if(popped == false){
+                console.log(popped)
+              
+                popped == true
+              }
+              
+              bubble.remove()
           }
             
         }, 50);
@@ -582,95 +598,377 @@ let gameInterval = setInterval(function() {
   }
 
   else if(curPage ==20){
-      
-    const container = document.querySelector('.containerB');
-const blocks = document.querySelectorAll('.block');
-const repulsionForce = 50;
-const mouseForce = 20;
-const friction = 0.99;
+    const ROWS = 6;
+const COLS = 7;
+let board = [];
+let currentPlayer = "red";
+let gameOver = false;
 
-let mouse = {
-  x: undefined,
-  y: undefined
-};
+// Initialize board
+function init() {
+  for (let row = 0; row < ROWS; row++) {
+    board[row] = [];
+    for (let col = 0; col < COLS; col++) {
+      board[row][col] = null;
+   
 
-function setInitialPositions() {
-  
-  for (let i = 0; i < blocks.length; i++) {
-    let block = blocks[i];
-    let x = Math.random() * (container.offsetWidth - block.offsetWidth);
-    let y = Math.random() * (container.offsetHeight - block.offsetHeight);
-    block.style.top = y + 'px';
-    block.style.left = x + 'px';
-  }
+}
+}
 }
 
-window.addEventListener('mousemove', function(event) {
-  mouse.x = event.clientX;
-  mouse.y = event.clientY;
+function createBoard() {
+  const board = [];
+  for (let row = 0; row < ROWS; row++) {
+    const boardRow = [];
+    for (let col = 0; col < COLS; col++) {
+      boardRow.push(null);
+    }
+    board.push(boardRow);
+  }
+  return board;
+}
+
+// Draw board
+function draw() {
+const boardElement = document.querySelector('.board');
+boardElement.innerHTML = '';
+for (let row = 0; row < ROWS; row++) {
+const rowElement = document.createElement('div');
+rowElement.classList.add('row');
+for (let col = 0; col < COLS; col++) {
+const cellElement = document.createElement('div');
+cellElement.classList.add('cell');
+if (board[row][col] === 'red') {
+cellElement.classList.add('red');
+} else if (board[row][col] === 'yellow') {
+cellElement.classList.add('yellow');
+}
+cellElement.addEventListener('click', () => {
+if (!gameOver) {
+dropPiece(col);
+}
+});
+rowElement.appendChild(cellElement);
+}
+boardElement.appendChild(rowElement);
+}
+}
+
+// Drop piece
+function dropPiece(col) {
+for (let row = ROWS - 1; row >= 0; row--) {
+if (board[row][col] === null) {
+board[row][col] = currentPlayer;
+draw();
+checkForWin(row, col);
+switchPlayers();
+return;
+}
+}
+}
+
+// Switch players
+function switchPlayers() {
+currentPlayer = currentPlayer === 'red' ? 'yellow' : 'red';
+}
+
+// Check for win
+function checkForWin(row, col) {
+if (checkHorizontal(row) || checkVertical(col) || checkDiagonal1(row, col) || checkDiagonal2(row, col)) {
+gameOver = true;
+alert(currentPlayer + " wins!")
+}
+}
+
+// Check for horizontal win
+function checkHorizontal(row) {
+let count = 0;
+for (let col = 0; col < COLS; col++) {
+if (board[row][col] === currentPlayer) {
+count++;
+if (count === 4) {
+return true;
+}
+} else {
+count = 0;
+}
+}
+return false;
+}
+
+// Check for vertical win
+function checkVertical(col) {
+let count = 0;
+for (let row = 0; row < ROWS; row++) {
+if (board[row][col] === currentPlayer) {
+count++;
+if (count === 4) {
+return true;
+}
+} else {
+count = 0;
+}
+}
+return false;
+}
+
+// Check for diagonal win (bottom left to top right)
+function checkDiagonal1(row, col) {
+let count = 0;
+let r = row;
+let c = col;
+while (r < ROWS && c >= 0) {
+if (board[r][c] === currentPlayer) {
+count++;
+if (count === 4) {
+return true;
+}
+} else {
+count = 0;
+}
+r++;
+c--;
+}
+r = row - 1;
+c = col + 1;
+while (r >= 0 && c < COLS) {
+if (board[r][c] === currentPlayer) {
+count++;
+if (count === 4) {
+return true;
+}
+} else {
+count = 0;
+}
+r--;
+c++;
+}
+return false;
+}
+
+// Check for diagonal win (top left to bottom right)
+function checkDiagonal2(row, col) {
+let count = 0;
+let r = row;
+let c = col;
+while (r >= 0 && c >= 0) {
+if(board[r][c] === currentPlayer) {
+count++;
+if (count === 4) {
+return true;
+}
+} else {
+count = 0;
+}
+r--;
+c--;
+}
+r = row + 1;
+c = col + 1;
+while (r < ROWS && c < COLS) {
+if (board[r][c] === currentPlayer) {
+count++;
+if (count === 4) {
+return true;
+}
+} else {
+count = 0;
+}
+r++;
+c++;
+}
+return false;
+}
+
+// Start game
+function startGame() {
+board = createBoard();
+currentPlayer = 'red';
+gameOver = false;
+draw();
+}
+
+
+
+const restartButton = document.getElementById('restart-button');
+if(curPage == 20){
+  restartButton.addEventListener('click', function reset(){
+    startGame();
+  });
+}
+
+
+startGame();
+
+
+    
+  }
+  
+  else if(curPage == 21){
+   // When true, moving the mouse draws on the canvas
+let isDrawing = false;
+let x = 0;
+let y = 0;
+
+const myPics = document.getElementById("myPics");
+const context = myPics.getContext("2d");
+
+// event.offsetX, event.offsetY gives the (x,y) offset from the edge of the canvas.
+
+// Add the event listeners for mousedown, mousemove, and mouseup
+myPics.addEventListener("mousedown", (e) => {
+  x = e.offsetX;
+  y = e.offsetY;
+  isDrawing = true;
 });
 
-function animate() {
-  requestAnimationFrame(animate);
-
-  for (let i = 0; i < blocks.length; i++) {
-    let block = blocks[i];
-
-    let totalForceX = 0;
-    let totalForceY = 0;
-
-    for (let j = 0; j < blocks.length; j++) {
-      if (i !== j) {
-        let otherBlock = blocks[j];
-        let distanceX = block.offsetLeft - otherBlock.offsetLeft;
-        let distanceY = block.offsetTop - otherBlock.offsetTop;
-        let distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-
-        if (distance < repulsionForce) {
-          let force = (repulsionForce - distance) / repulsionForce;
-          totalForceX += force * distanceX;
-          totalForceY += force * distanceY;
-        }
-      }
-    }
-
-    let distanceX = mouse.x - block.offsetLeft - block.offsetWidth / 2;
-    let distanceY = mouse.y - block.offsetTop - block.offsetHeight / 2;
-    let mouseDistance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-
-    if (mouseDistance < mouseForce) {
-      let mouseForceAmount = (mouseForce - mouseDistance) / mouseForce;
-      totalForceX += mouseForceAmount * distanceX;
-      totalForceY += mouseForceAmount * distanceY;
-    }
-
-    let forceX = totalForceX * 0.1;
-    let forceY = totalForceY * 0.1;
-
-    block.style.left = block.offsetLeft + forceX + 'px';
-    block.style.top = block.offsetTop + forceY + 'px';
-
-    block.style.transform = 'translate(-50%, -50%) rotate(' + block.offsetTop + 'deg)';
-    block.style.transform += ' rotate(' + block.offsetLeft + 'deg)';
+myPics.addEventListener("mousemove", (e) => {
+  if (isDrawing) {
+    drawLine(context, x, y, e.offsetX, e.offsetY);
+    x = e.offsetX;
+    y = e.offsetY;
   }
+});
+
+window.addEventListener("mouseup", (e) => {
+  if (isDrawing) {
+    drawLine(context, x, y, e.offsetX, e.offsetY);
+    x = 0;
+    y = 0;
+    isDrawing = false;
+  }
+});
+
+window.addEventListener("touchstart",  (e) => {
+  x = e.offsetX;
+  y = e.offsetY;
+  isDrawing = true;
+});
+
+window.addEventListener("touchmove", (e) => {
+  if (isDrawing) {
+    drawLine(context, x, y, e.offsetX, e.offsetY);
+    x = e.offsetX;
+    y = e.offsetY;
+  }
+});
+
+window.addEventListener("touchend",  (e) => {
+  if (isDrawing) {
+    drawLine(context, x, y, e.offsetX, e.offsetY);
+    x = 0;
+    y = 0;
+    isDrawing = false;
+  }
+});
+
+function drawLine(context, x1, y1, x2, y2) {
+  context.beginPath();
+  context.strokeStyle = "red";
+  context.lineWidth = 100;
+  context.moveTo(x1, y1);
+  context.lineTo(x2, y2);
+  context.stroke();
+  context.closePath();
 }
-
-setInitialPositions();
-animate();
-
-  }
-
-  else if(curPage ==21){
-  
-
+     
+            
   }
 
   else if(curPage==22){
-
+    
   }
 
   else if(curPage==23){
+    var dogSound = new Audio("labrador-barking-daniel_simon.wav");
+    var duckSound = new Audio("duck-quack2.wav");
+    var pigSound = new Audio("Pig-Oink.wav");
+    var sheepSound = new Audio("sheep.wav");
+    var dog = document.getElementById('dogpix');
+    var duck = document.getElementById('duckpix');
+    var sheep = document.getElementById('sheeppix');
+    var pig = document.getElementById('pigpix');
+
     
+    dog.addEventListener("click", function() {
+      dogSound.play()
+    });
+
+    duck.addEventListener("click", function() {
+      duckSound.play()
+    });
+
+    pig.addEventListener("click", function() {
+        pigSound.play()
+    });
+
+    sheep.addEventListener("click", function() {
+      sheepSound.play()
+  });
+
+  }
+
+  else if(curPage==24){
+    const gridContainer = document.getElementById("grid-container");
+const addBoxBtn = document.getElementById("add-box-btn");
+
+let boxCounter = 0;
+
+addBoxBtn.addEventListener("click", addBox);
+
+function addBox() {
+  const box = document.createElement("div");
+  box.classList.add("box");
+  box.id = `box-${boxCounter}`;
+  box.style.left = `${getRandomInt(0, 450)}px`;
+  box.style.top = `${getRandomInt(0, 450)}px`;
+  box.addEventListener("mousedown", startDragging);
+  gridContainer.appendChild(box);
+  boxCounter++;
+}
+
+function startDragging(e) {
+  const box = e.target;
+  const startX = e.clientX - box.offsetLeft;
+  const startY = e.clientY - box.offsetTop;
+
+  function moveBox(e) {
+    box.style.left = `${e.clientX - startX}px`;
+    box.style.top = `${e.clientY - startY}px`;
+  }
+
+  function stopDragging() {
+    document.removeEventListener("mousemove", moveBox);
+    document.removeEventListener("mouseup", stopDragging);
+  }
+
+  document.addEventListener("mousemove", moveBox);
+  document.addEventListener("mouseup", stopDragging);
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function addBox() {
+  const box = document.createElement("div");
+  box.classList.add("box");
+  box.id = `box-${boxCounter}`;
+  
+  // Set the position of the box within the bounds of the grid
+  const gridRect = gridContainer.getBoundingClientRect();
+  const boxRect = box.getBoundingClientRect();
+  const maxLeft = gridRect.width - boxRect.width;
+  const maxTop = gridRect.height - boxRect.height;
+  box.style.left = `${getRandomInt(0, maxLeft)}px`;
+  box.style.top = `${getRandomInt(0, maxTop)}px`;
+  
+  box.addEventListener("mousedown", startDragging);
+  gridContainer.appendChild(box);
+  boxCounter++;
+}
+
+
   }
   
   function updatePage(){
@@ -707,11 +1005,8 @@ animate();
     }
 
     else if(curPage == 4){
-      var backgroundColor = document.getElementById("sensory_room_body");
-      
-
-    
-      backgroundColor.style.backgroundColor =  colorSchemes[(curScheme-1)][0];
+      var curBackgroundImage = document.getElementById("sensory_room_body");
+      curBackgroundImage.style.backgroundImage = "url(SensoryRoomS" + curScheme + ".jpg)";
 
       $(function(){
         $("[id='test_box']").css({"background-color":colorSchemes[(curScheme-1)][1]});
@@ -724,27 +1019,53 @@ animate();
     }
 
     else if(curPage == 5){
-
+      var curBackgroundImage = document.getElementById("sensory_room_body");
+      curBackgroundImage.style.backgroundImage = "url(SensoryRoomS" + curScheme + ".jpg)";
     }
 
     else if(curPage == 6){
-      var backgroundColor = document.getElementById("sensory_room_body");
-      backgroundColor.style.backgroundColor =  colorSchemes[(curScheme-1)][0];
+      var curBackgroundImage = document.getElementById("sensory_room_body");
+      curBackgroundImage.style.backgroundImage = "url(SensoryRoomS" + curScheme + ".jpg)";
       $(function(){
         $("[id='test_box']").css({"background-color":colorSchemes[(curScheme-1)][1]});
         });
     }
 
     else if(curPage == 7){
-
+      var curBackgroundImage = document.getElementById("sensory_room_body");
+      curBackgroundImage.style.backgroundImage = "url(SensoryRoomS" + curScheme + ".jpg)";
     }
 
     else if(curPage == 8){
-
+      var curBackgroundImage = document.getElementById("sensory_room_body");
+      curBackgroundImage.style.backgroundImage = "url(SensoryRoomS" + curScheme + ".jpg)";
     }
 
-    else if (curPage=20){
-     
+    else if (curPage==20){
+      var curBackgroundImage = document.getElementById("sensory_room_body");
+      curBackgroundImage.style.backgroundImage = "url(SensoryRoomS" + curScheme + ".jpg)";
+    } 
+    else if(curPage==21){
+      var curBackgroundImage = document.getElementById("sensory_room_body");
+      curBackgroundImage.style.backgroundImage = "url(SensoryRoomS" + curScheme + ".jpg)";
+    } 
+    else if(curPage ==22){
+      var curBackgroundImage = document.getElementById("sensory_room_body");
+      curBackgroundImage.style.backgroundImage = "url(SensoryRoomS" + curScheme + ".jpg)";
+      $(function(){
+        $("[id='test_box']").css({"background-color":colorSchemes[(curScheme-1)][1]});
+        });
+
+        $(function(){
+          $("[class='customButton']").css({"background-color":colorSchemes[(curScheme-1)][2]});
+          });
+
+    } else if(curPage == 23){
+      var curBackgroundImage = document.getElementById("sensory_room_body");
+      curBackgroundImage.style.backgroundImage = "url(SensoryRoomS" + curScheme + ".jpg)";
+      $(function(){
+        $("[id='test_box']").css({"background-color":colorSchemes[(curScheme-1)][1]});
+        });
 
     }
 
